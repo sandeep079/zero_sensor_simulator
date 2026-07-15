@@ -1,0 +1,6 @@
+
+# Binary files (already tracked)
+build/
+bin/
+*.o
+s24_test
