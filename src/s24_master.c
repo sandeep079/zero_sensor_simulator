@@ -86,21 +86,21 @@ s24_status_t s24_master_boot(void) {
         if (status == S24_OK) {
             sensors[i].booted = true;
             sensors[i].boot_time_ms = HAL_TIMER.get_tick() - master_start_time;
-            LOG_INFO("  ✅ %s booted in %dms", 
+            LOG_INFO("   %s booted in %dms", 
                      sensors[i].name, sensors[i].boot_time_ms);
         } else {
             sensors[i].booted = false;
-            LOG_ERROR("  ❌ %s boot failed with code %d", 
+            LOG_ERROR("   %s boot failed with code %d", 
                       sensors[i].name, status);
             overall_status = S24_ERROR;
         }
     }
     
     if (overall_status == S24_OK) {
-        LOG_INFO("✅ All sensors booted successfully in %dms",
+        LOG_INFO("All sensors booted successfully in %dms",
                  HAL_TIMER.get_tick() - master_start_time);
     } else {
-        LOG_WARN("⚠️ Some sensors failed to boot (see above)");
+        LOG_WARN(" Some sensors failed to boot (see above)");
     }
     
     master_initialized = true;
@@ -125,7 +125,7 @@ void s24_master_shutdown(void) {
             LOG_INFO("Deinitializing %s...", sensors[i].name);
             sensors[i].deinit();
             sensors[i].booted = false;
-            LOG_INFO("  ✅ %s deinitialized", sensors[i].name);
+            LOG_INFO("   %s deinitialized", sensors[i].name);
         }
     }
     
