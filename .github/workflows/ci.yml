@@ -1,0 +1,37 @@
+name: S24 Sensor Simulator CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y valgrind build-essential
+    
+    - name: Build project
+      run: make clean && make
+    
+    - name: Run tests
+      run: make test
+    
+    - name: Memory leak check
+      run: make valgrind || true
+    
+    - name: Upload test logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-logs
+        path: |
+          *.log
+          build/*.log
